@@ -1,0 +1,19 @@
+The issue is that `calc()` within a media query might not correctly interpret percentages of elements unless the referencing element is already sized and styled within the same context.  A reliable solution often requires JavaScript.
+
+Here's a JavaScript approach that calculates the width dynamically:
+```javascript
+const element1 = document.getElementById('element1');
+const element2 = document.getElementById('element2');
+
+function calculateWidth() {
+  const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  const element2Width = element2.offsetWidth;
+  const newWidth = Math.max(0, vw * 0.5 - element2Width * 0.2); //Convert percentages to decimals
+  element1.style.width = `${newWidth}px`;
+}
+
+window.addEventListener('resize', calculateWidth);
+window.addEventListener('load', calculateWidth); //Initial calculation
+```
+
+And then remove the `calc()` from the `bug.css` file.  You would also need to ensure that `element1` and `element2` have appropriate IDs in your HTML.
